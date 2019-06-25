@@ -2,9 +2,12 @@
 
 $config = parse_ini_file('config.ini'); 
 
-try {
-  $conn = new PDO("mysql:host=$config['servername'];dbname=$config['dbname']", $config['username'], $config['password']);
+$servername = $config['servername'];
+$dbname = $config['dbname'];
 
+try {
+  $conn = new PDO("mysql:host=$servername;dbname=$dbname", $config['username'], $config['password']);
+  
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
  
 }
