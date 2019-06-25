@@ -1,0 +1,47 @@
+.container {
+  margin:50px;
+  background: lightgrey;
+}
+
+#app {
+  padding:20;
+  background: white;
+  border: 5px solid #c5c5c5;
+  height: 600px;
+}
+
+.test {
+  float: left;
+  width: 80%;
+  padding: 10px 20px;
+  height: 400px;
+}
+
+.input {
+  border: 0;
+  padding: 0;
+}
+.input textarea {
+  padding: 5px 9px;
+  width: 100%;
+  border: 5px solid black;
+  height: 300px;
+  box-shadow: none;
+}
+
+.stats {
+  float:right;
+  width: 20%;
+}
+.stats .time {
+    border: 5px solid black;
+    padding: 0 20px;
+}
+.stats .wpm {
+  padding: 0 20px;
+  border: 5px solid green;
+}
+.stats .errors {
+  padding: 0 20px;
+  border: 5px solid red;
+}

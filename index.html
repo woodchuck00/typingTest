@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vohra - Typing Test</title>
+  <meta name="description" content="This typing test should quantify speed and accuracy on the client side, and on the server side it should aggregate the results.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css">
+  <link rel="stylesheet" href="scripts/css/main.css">
+</head>
+<body>
+  <div class="container">
+    <div id="app">
+      <div class="test">
+        <p v-if="text == 'easy'">
+          <span v-html="test.easy"></span>
+        </p>
+        <p v-if="text == 'hard'">
+          <span v-html="test.hard"></span>
+        </p>
+        <p v-if="text == 'lorem'">
+          <span v-html="test.lorem"></span>
+        </p>
+      </div>
+
+      <div class="stats">
+        <div class="time">
+          <p>Time:</p>
+          <div>
+            <span>{{ minutes }}</span>
+            <span>:</span>
+            <span>{{ seconds }}</span>
+          </div>
+        </div>
+        <div class="wpm">
+          <p>WPM:</p>
+          <div>{{ wpm }}</div>
+        </div>
+        <div class="errors">
+          <p>mistyped words:</p>
+          <div>{{ errors }}</div>
+        </div>
+      </div>
+
+      <div class="input" @keyup.once="startTimer">
+        <textarea @keyup.space="compareText" placeholder="Start typing here">
+          
+        </textarea>
+      </div>
+
+      <modal  id="start-modal" type="is-active">
+        <h1 slot="title">Welcome to typing test</h1>
+        <div slot="body">
+          <p>We are going to test your speed and accuracy in typing. Select the text and time length of test.</p>
+
+          <div>
+            <label>Select text for typing</label>
+            <v-select @change="updateText" v-model="text" :options="textList"></v-select>
+          </div>
+
+          <div>
+            <label>Select time for typing test</label>
+            <v-select @change="updateTime" v-model="time" :options="timeList"></v-select>
+          </div>
+        </div>
+        <div slot=footer>
+          <v-button type="is-success" @click="closeModal">Save changes</v-button>
+        </div>
+      </modal>
+
+      <modal id="end-modal" type="">
+        <h1 slot="title">Results of typing test</h1>
+        <div slot="body">
+          <p>You typed {{wpm}} words per minute</p>
+          <p>You had an accuracy of 
+            <span v-if="wordArray.length == errors">100</span>
+            <span v-if="errors == 0">0</span>
+            <span v-else>{{ Math.round(((compareInt + 1) - errors) /  (compareInt + 1) * 100) / 100}}</span>%
+          </p>
+          <div>
+            <label>Name:</label>
+            <input type="text" v-model="name">
+          </div>
+
+        </div>
+        <div slot=footer>
+          <v-button type="is-success" @click="setScore">Send score</v-button>
+          <v-button type="is-info" @click="getScores">View scores</v-button>
+          <v-button type="is-danger" @click="reload">Retake test</v-button>
+
+        </div>
+      </modal>
+
+      <modal id="score-modal" type="">
+        <h1 slot="title">Results of typing test</h1>
+        <div slot="body">
+          <table class="table">
+            <thead>
+              <td>NAME</td>
+              <td>SPEED</td>
+              <td>ACCURACY</td>
+            </thead>
+            <tbody v-for="s in savedScores">
+              <td>{{s.name}}</td> 
+              <td>{{s.speed}}</td>
+              <td>{{s.accuracy}}</td>             
+            </tbody>
+          </table>
+        </div>
+        <div slot=footer>
+          <v-button type="is-info" @click="endTest">Back</v-button>
+          <v-button type="is-danger" @click="reload">Retake test</v-button>
+        </div>
+      </modal>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="scripts/js/main.js"></script>
+</body>
+</html>
